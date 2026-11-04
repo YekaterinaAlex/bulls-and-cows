@@ -1,9 +1,10 @@
 export const evaluateGuess = (secret: string, guess: string): { bulls: number; cows: number } => {
-  void secret;
-  void guess;
-
+  const bulls = [...guess].filter((digit, index) => digit === secret[index]).length;
+  const cows = [...guess].filter(
+    (digit, index) => digit !== secret[index] && secret.includes(digit),
+  ).length;
   return {
-    bulls: 0,
-    cows: 0,
+    bulls,
+    cows,
   };
 };
