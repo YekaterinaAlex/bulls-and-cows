@@ -1,0 +1,289 @@
+:root {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #f8fafc;
+  background-color: #102d32;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 60px 20px;
+
+  background: radial-gradient(circle at 50% 0%, #1b4a4f 0%, transparent 55%), #102d32;
+}
+
+h1 {
+  text-align: center;
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+
+  color: #f8fafc;
+  margin: 0 auto 48px;
+}
+
+h1::after {
+  content: 'BRAIN CHALLENGE';
+  display: block;
+  margin-top: 12px;
+
+  color: #56e0bf;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+
+label {
+  display: block;
+  max-width: 440px;
+  margin: 0 auto 20px;
+  padding: 24px;
+
+  background: #152236;
+  border: 1px solid #263750;
+  border-radius: 16px;
+
+  color: #cbd5e1;
+  font-size: 15px;
+  font-weight: 600;
+
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+label:hover {
+  border-color: #438f86;
+  transform: translateY(-2px);
+}
+
+select {
+  display: block;
+  width: 100%;
+
+  margin-top: 14px;
+  padding: 14px 16px;
+
+  background-color: #223149;
+  color: #f8fafc;
+
+  border: 1px solid #344760;
+  border-radius: 10px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+select:hover {
+  border-color: #56e0bf;
+}
+
+select:focus-visible {
+  outline: none;
+  border-color: #56e0bf;
+  box-shadow: 0 0 0 3px rgba(86, 224, 191, 0.18);
+}
+
+option {
+  background-color: #223149;
+  color: #f8fafc;
+}
+
+option:disabled {
+  color: #8491a4;
+}
+
+.secret-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 auto 40px;
+}
+
+.secret-digit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 55px;
+  height: 65px;
+
+  background: #223149;
+  border: 1px solid #344760;
+  border-radius: 12px;
+
+  color: #56e0bf;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+button {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+
+  margin: 28px auto;
+  padding: 16px 24px;
+
+  background: #52dbb4;
+  color: #0b2b26;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  background: #83efd1;
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.game-status {
+  text-align: center;
+  color: #56e0bf;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px 16px;
+
+  background: #224047;
+  color: #f8fafc;
+
+  border: 1px solid #438f86;
+  border-radius: 10px;
+
+  font-size: 18px;
+  letter-spacing: 3px;
+}
+
+input::placeholder {
+  color: #a5bec2;
+  letter-spacing: normal;
+}
+
+input:focus-visible {
+  outline: 2px solid #56e0bf;
+  outline-offset: 2px;
+}
+
+input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.history-section {
+  max-width: 440px;
+  margin: 32px auto;
+  padding: 24px;
+
+  background-color: #152f35;
+  border: 1px solid #438f86;
+  border-radius: 16px;
+}
+
+.history-section h2 {
+  margin: 0 0 16px;
+
+  color: #f8fafc;
+  font-size: 20px;
+}
+
+.history-section p {
+  margin: 0;
+  padding: 20px 0;
+
+  color: #a5bec2;
+  font-size: 14px;
+  text-align: center;
+}
+
+.attempts-counter {
+  max-width: 440px;
+  margin: 20px auto;
+  padding: 16px;
+
+  background-color: #152f35;
+  border: 1px solid #438f86;
+  border-radius: 12px;
+
+  color: #56e0bf;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.game-timer {
+  max-width: 440px;
+  margin: 20px auto;
+  padding: 16px;
+
+  background-color: #152f35;
+  border: 1px solid #438f86;
+  border-radius: 12px;
+
+  color: #56e0bf;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+#stop-button {
+  margin-top: 12px;
+  background-color: transparent;
+  color: #ffaaa5;
+  border: 1px solid #bd7775;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 36px 16px;
+  }
+
+  h1 {
+    margin-bottom: 32px;
+  }
+
+  label {
+    padding: 20px;
+  }
+
+  select {
+    font-size: 16px;
+  }
+}
