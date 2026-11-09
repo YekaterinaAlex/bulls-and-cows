@@ -2,6 +2,8 @@ import { generateSecret } from './core/generateSecret.js';
 import { isValidGuess } from './core/isValidGuess.js';
 import { createDigitValidator } from './core/createDigitValidator.js';
 import { evaluateGuess } from './core/evaluateGuess.js';
+import { saveGameRecord } from './core/saveGameRecord.js';
+import { getGameRecords } from './core/getGameRecords.js';
 
 const title = document.createElement('h1');
 title.textContent = 'Bulls and Cows';
@@ -233,6 +235,14 @@ checkButton.addEventListener('click', () => {
     revealSecret(currentSecret);
     stopTimer();
 
+    saveGameRecord({
+      attempts: attempts,
+      time: seconds,
+      length: length,
+      base: base,
+    });
+    renderLeaderboard();
+
     guessInput.disabled = true;
     checkButton.disabled = true;
     stopButton.disabled = true;
@@ -259,6 +269,50 @@ historySection.append(historyTitle, historyMessage);
 
 document.body.append(historySection);
 
+const leaderboardSection = document.createElement('section');
+leaderboardSection.className = 'leaderboard-section';
+
+const leaderboardTitle = document.createElement('h2');
+leaderboardTitle.textContent = '🏆 Leaderboard';
+
+leaderboardSection.append(leaderboardTitle);
+document.body.append(leaderboardSection);
+
+const renderLeaderboard = (): void => {
+  const records = getGameRecords();
+
+  records.sort((a, b) => {
+    if (a.attempts !== b.attempts) {
+      return a.attempts - b.attempts;
+    }
+
+    return a.time - b.time;
+  });
+
+  leaderboardSection.replaceChildren(leaderboardTitle);
+
+  if (records.length === 0) {
+    const emptyMessage = document.createElement('p');
+    emptyMessage.textContent = 'No records yet';
+
+    leaderboardSection.append(emptyMessage);
+    return;
+  }
+
+  records.forEach((record) => {
+    const recordItem = document.createElement('p');
+    const system = numberSystems.find((item) => Number(item.base) === record.base);
+
+    const baseName = system?.name ?? String(record.base);
+
+    recordItem.textContent = `Length: ${record.length} | Base: ${baseName} | Attempts: ${record.attempts} | Time: ${record.time}s`;
+
+    leaderboardSection.append(recordItem);
+  });
+};
+
+renderLeaderboard();
+
 let attempts = 0;
 
 const attemptsCounter = document.createElement('p');
@@ -279,6 +333,7 @@ statsRow.className = 'stats-row';
 
 attemptsCounter.before(statsRow);
 statsRow.append(attemptsCounter, timer);
+statsRow.after(leaderboardSection);
 
 let seconds = 0;
 let timerInterval: number | null = null;
