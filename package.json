@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run build && serve .",
     "build": "tsc",
+    "build:site": "npm run build && node scripts/build-site.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
