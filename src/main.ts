@@ -76,7 +76,12 @@ for (const system of numberSystems) {
 baseSelect.value = '10';
 
 baseLabel.append(baseSelect);
-document.body.append(baseLabel);
+
+const settingsRow = document.createElement('div');
+settingsRow.className = 'settings-row';
+
+lengthLabel.before(settingsRow);
+settingsRow.append(lengthLabel, baseLabel);
 
 baseSelect.addEventListener('change', () => {
   const base = Number(baseSelect.value);
@@ -178,6 +183,11 @@ checkButton.type = 'button';
 checkButton.disabled = true;
 
 document.body.append(checkButton);
+const guessRow = document.createElement('div');
+guessRow.className = 'guess-row';
+
+guessLabel.before(guessRow);
+guessRow.append(guessLabel, checkButton);
 
 const errorMessage = document.createElement('p');
 errorMessage.className = 'error-message';
@@ -213,6 +223,10 @@ checkButton.addEventListener('click', () => {
   attemptsCounter.textContent = `Attempts: ${attempts}`;
   guessInput.value = '';
   historySection.append(historyItem);
+  historyItem.scrollIntoView({
+    behavior: 'smooth',
+    block: 'nearest',
+  });
 
   if (result.bulls === length) {
     gameStatus.textContent = 'Congratulations! You won! 🏆';
@@ -260,6 +274,12 @@ timer.textContent = 'Time: 00:00';
 
 document.body.append(timer);
 
+const statsRow = document.createElement('div');
+statsRow.className = 'stats-row';
+
+attemptsCounter.before(statsRow);
+statsRow.append(attemptsCounter, timer);
+
 let seconds = 0;
 let timerInterval: number | null = null;
 
@@ -287,7 +307,11 @@ stopButton.type = 'button';
 stopButton.disabled = true;
 stopButton.id = 'stop-button';
 
-startButton.after(stopButton);
+const buttonsRow = document.createElement('div');
+buttonsRow.className = 'buttons-row';
+
+startButton.before(buttonsRow);
+buttonsRow.append(startButton, stopButton);
 
 stopButton.addEventListener('click', () => {
   stopTimer();

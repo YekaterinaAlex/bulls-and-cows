@@ -11,7 +11,7 @@
 body {
   min-height: 100vh;
   margin: 0;
-  padding: 60px 20px;
+  padding: 28px 20px;
 
   background: radial-gradient(circle at 50% 0%, #1b4a4f 0%, transparent 55%), #102d32;
 }
@@ -23,7 +23,7 @@ h1 {
   letter-spacing: -1.5px;
 
   color: #f8fafc;
-  margin: 0 auto 48px;
+  margin: 0 auto 20px;
 }
 
 h1::after {
@@ -109,7 +109,7 @@ option:disabled {
   justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 0 auto 40px;
+  margin: 0 auto 20px;
 }
 
 .secret-digit {
@@ -215,6 +215,9 @@ input:disabled {
   background-color: #152f35;
   border: 1px solid #438f86;
   border-radius: 16px;
+
+  max-height: 240px;
+  overflow-y: auto;
 }
 
 .history-section h2 {
@@ -226,7 +229,7 @@ input:disabled {
 
 .history-section p {
   margin: 0;
-  padding: 20px 0;
+  padding: 8px 0;
 
   color: #a5bec2;
   font-size: 14px;
@@ -268,6 +271,107 @@ input:disabled {
   background-color: transparent;
   color: #ffaaa5;
   border: 1px solid #bd7775;
+}
+
+.settings-row {
+  display: flex;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.settings-row label {
+  flex: 1;
+  min-width: 0;
+}
+
+.buttons-row {
+  display: flex;
+  gap: 16px;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.buttons-row button {
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+}
+
+#stop-button {
+  margin-top: 0;
+}
+
+.stats-row {
+  display: flex;
+  gap: 16px;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.stats-row .attempts-counter,
+.stats-row .game-timer {
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+}
+
+.guess-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.guess-row label {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+.guess-row button {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 12px 20px;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.error-message {
+  max-width: 900px;
+  margin: 12px auto;
+  padding: 12px 16px;
+
+  background-color: #3b242b;
+  border: 1px solid #bd7775;
+  border-radius: 10px;
+
+  color: #ffaaa5;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.error-message:empty {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .settings-row {
+    flex-direction: column;
+  }
+
+  .guess-row {
+    flex-direction: column;
+  }
+
+  .guess-row button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
