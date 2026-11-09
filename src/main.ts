@@ -1,3 +1,8 @@
+import { generateSecret } from './core/generateSecret.js';
+import { isValidGuess } from './core/isValidGuess.js';
+import { createDigitValidator } from './core/createDigitValidator.js';
+import { evaluateGuess } from './core/evaluateGuess.js';
+
 const title = document.createElement('h1');
 title.textContent = 'Bulls and Cows';
 document.body.append(title);
@@ -14,6 +19,13 @@ const renderSecretCards = (length: number): void => {
 
     secretContainer.append(digit);
   }
+};
+const revealSecret = (secret: string): void => {
+  const secretDigits = secretContainer.querySelectorAll('.secret-digit');
+
+  secretDigits.forEach((card, index) => {
+    card.textContent = secret[index];
+  });
 };
 renderSecretCards(4);
 document.body.append(secretContainer);
@@ -88,6 +100,8 @@ document.body.append(startButton);
 const gameStatus = document.createElement('p');
 gameStatus.className = 'game-status';
 document.body.append(gameStatus);
+let currentSecret = '';
+const previousGuesses = new Set<string>();
 
 startButton.addEventListener('click', () => {
   lengthSelect.disabled = true;
@@ -99,6 +113,19 @@ startButton.addEventListener('click', () => {
   checkButton.disabled = false;
   stopButton.disabled = false;
 
+  const length = Number(lengthSelect.value);
+  const base = Number(baseSelect.value);
+
+  attempts = 0;
+  attemptsCounter.textContent = 'Attempts: 0';
+  previousGuesses.clear();
+  errorMessage.textContent = '';
+  historySection.replaceChildren(historyTitle, historyMessage);
+  historyMessage.textContent = 'No guesses yet';
+  guessInput.value = '';
+  currentSecret = generateSecret(length, base);
+
+  renderSecretCards(length);
   if (timerInterval !== null) {
     window.clearInterval(timerInterval);
   }
@@ -120,7 +147,28 @@ guessInput.type = 'text';
 guessInput.placeholder = 'Enter your guess';
 guessInput.autocomplete = 'off';
 guessInput.disabled = true;
+guessInput.addEventListener('input', () => {
+  errorMessage.textContent = '';
+  const base = Number(baseSelect.value);
+  const isAllowedDigit = createDigitValidator(base);
 
+  const uniqueDigits = new Set<string>();
+
+  guessInput.value = [...guessInput.value]
+    .filter(isAllowedDigit)
+    .filter((digit) => {
+      const normalizedDigit = digit.toLowerCase();
+
+      if (uniqueDigits.has(normalizedDigit)) {
+        return false;
+      }
+
+      uniqueDigits.add(normalizedDigit);
+      return true;
+    })
+    .slice(0, Number(lengthSelect.value))
+    .join('');
+});
 guessLabel.append(guessInput);
 document.body.append(guessLabel);
 
@@ -130,6 +178,61 @@ checkButton.type = 'button';
 checkButton.disabled = true;
 
 document.body.append(checkButton);
+
+const errorMessage = document.createElement('p');
+errorMessage.className = 'error-message';
+errorMessage.setAttribute('role', 'alert');
+
+document.body.append(errorMessage);
+
+checkButton.addEventListener('click', () => {
+  const guess = guessInput.value.trim().toLowerCase();
+  const length = Number(lengthSelect.value);
+  const base = Number(baseSelect.value);
+
+  if (!isValidGuess(guess, length, base)) {
+    errorMessage.textContent = 'Invalid guess! Check the digits and try again.';
+    return;
+  }
+  if (previousGuesses.has(guess)) {
+    errorMessage.textContent = 'You already tried this guess!';
+    return;
+  }
+  errorMessage.textContent = '';
+  previousGuesses.add(guess);
+  const result = evaluateGuess(currentSecret, guess);
+
+  console.log('Bulls:', result.bulls);
+  console.log('Cows:', result.cows);
+
+  historyMessage.remove();
+
+  const historyItem = document.createElement('p');
+  historyItem.textContent = `${guess} — 🐂 ${result.bulls} | 🐄 ${result.cows}`;
+  attempts++;
+  attemptsCounter.textContent = `Attempts: ${attempts}`;
+  guessInput.value = '';
+  historySection.append(historyItem);
+
+  if (result.bulls === length) {
+    gameStatus.textContent = 'Congratulations! You won! 🏆';
+    revealSecret(currentSecret);
+    stopTimer();
+
+    guessInput.disabled = true;
+    checkButton.disabled = true;
+    stopButton.disabled = true;
+    lengthSelect.disabled = false;
+    baseSelect.disabled = false;
+    startButton.textContent = 'Start Game';
+  }
+});
+
+guessInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    checkButton.click();
+  }
+});
 
 const historySection = document.createElement('section');
 historySection.className = 'history-section';
@@ -141,6 +244,8 @@ historyMessage.textContent = 'No guesses yet';
 historySection.append(historyTitle, historyMessage);
 
 document.body.append(historySection);
+
+let attempts = 0;
 
 const attemptsCounter = document.createElement('p');
 attemptsCounter.className = 'attempts-counter';
@@ -187,6 +292,7 @@ startButton.after(stopButton);
 stopButton.addEventListener('click', () => {
   stopTimer();
 
+  revealSecret(currentSecret);
   guessInput.disabled = true;
   checkButton.disabled = true;
   stopButton.disabled = true;
